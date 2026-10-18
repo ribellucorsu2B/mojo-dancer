@@ -1,0 +1,6 @@
+Mojo Dancer
+
+Personnage et animations : Mixamo (Adobe) - https://www.mixamo.com
+Moteur 3D : three.js (MIT) - https://threejs.org
+Décompression : fflate (MIT)
+Les fichiers 3D d'origine de Mixamo ne sont pas redistribués.
