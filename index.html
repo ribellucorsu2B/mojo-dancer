@@ -17,9 +17,15 @@ input[type=range]{flex:1;min-width:0;height:28px;accent-color:#ff2d95}#v{accent-
 .sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff6;flex:none;cursor:pointer}
 input[type=color]{width:42px;height:32px;padding:0;border:none;background:none;flex:none}
 #lauto.on{border-color:#27e4ff;background:#1d4a5c}
+#help{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+#hc{background:#12091f;border:1px solid #5b3a8f;border-radius:16px;padding:18px 18px 14px;max-width:460px;width:100%;max-height:88vh;overflow:auto;line-height:1.45}
+#hc h2{margin:0 0 10px;font-size:20px;color:#ff2d95}#hc ul{margin:0 0 12px;padding-left:20px}#hc li{margin:6px 0}
+#hc .tip{background:#1d1033;border:1px solid #3a2a66;border-radius:12px;padding:10px 12px;margin:10px 0;font-size:14px}
+#hc .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}#hc button{min-height:44px;flex:1}
 #hint{position:fixed;top:12%;width:100%;padding:0 24px;text-align:center;opacity:.8;pointer-events:none;font-size:17px;line-height:1.5}
 </style></head><body>
 <canvas id="c"></canvas>
+<div id="help"><div id="hc"></div></div>
 <div id="hint">Chargement de la danseuse…</div>
 <div id="l"></div>
 <div id="ui"><div id="t">Mojo Dancer</div>
@@ -28,7 +34,7 @@ input[type=color]{width:42px;height:32px;padding:0;border:none;background:none;f
 <div class="r sm">Vitesse<input id="sp" type="range" min="30" max="200" value="80">Volume<input id="v" type="range" min="0" max="100" value="80"></div>
 <div id="lp"><div class="r sm"><span style="min-width:78px">Fond</span><span id="swb" class="r" style="gap:6px"></span><input id="lbg" type="color" value="#07040f"></div>
 <div class="r sm"><span style="min-width:78px">Projecteurs</span><button id="lauto" class="on" style="min-height:32px">Auto</button><span id="swl" class="r" style="gap:6px"></span><input id="llc" type="color" value="#ff2d95"></div><div class="r sm"><span style="min-width:78px">Lasers</span><button id="lzb" style="min-height:32px">Multicolore</button></div></div>
-<div class="r sm" style="flex-wrap:wrap"><button id="lbtn" style="min-height:36px">🎨 Lumière</button><button id="chr" style="min-height:36px">💃 Danseuse</button><button id="shr" style="min-height:36px">📤 Partager</button><button id="inst" style="min-height:36px;display:none">📲 Installer</button><button id="mdl" style="min-height:36px">Changer de personnage</button><span id="dn"></span><button id="fs" style="min-height:36px">⛶</button></div></div>
+<div class="r sm" style="flex-wrap:wrap"><button id="lbtn" style="min-height:36px">🎨 Lumière</button><button id="chr" style="min-height:36px">💃 Danseuse</button><button id="shr" style="min-height:36px">📤 Partager</button><button id="inst" style="min-height:36px;display:none">📲 Installer</button><button id="mdl" style="min-height:36px">Changer de personnage</button><span id="dn"></span><button id="fs" style="min-height:36px">⛶</button><button id="hlp" style="min-height:36px">❓ Aide</button></div></div>
 <input id="f" type="file" accept="audio/*" multiple hidden><input id="fm" type="file" accept=".fbx,.glb,.gltf,.png,.jpg,.jpeg,.webp" multiple hidden>
 <script>/**
  * @license
@@ -7787,6 +7793,19 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000,dt=Math.min(.3,t
  if(mixer){const sy=live?syncSpeed():null,f=$('sp').value/80;let tg=live?.9+(E.m+E.b)*.25+kick*.1:.3;if(sy!==null)tg=Math.abs(f-1)<.06?sy:sy*f;spd+=(tg-spd)*(sy!==null?.3:.1);mixer.update(dt*spd*(sy!==null?1:$('sp').value/100));loopTick();root.scale.setScalar(1+kick*.02)}
  const pit=Math.atan2(camY-camL,camZ)+uel+Math.max(0,zm-1)*.09,rr=camZ*zm;C.position.set(Math.sin(az)*Math.cos(pit)*rr,camL+Math.sin(pit)*rr,Math.cos(az)*Math.cos(pit)*rr);S.fog.near=Math.max(7,camZ*zm+4);S.fog.far=Math.max(20,camZ*zm+17);C.lookAt(0,camL,0);R.render(S,C)}
 requestAnimationFrame(loop);
+function helpTip(){const UA=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),sam=/SamsungBrowser/i.test(UA),and=/Android/i.test(UA),st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+ if(st)return null;
+ if(ios)return{t:'📲 <b>Pour installer l’appli</b> : appuie sur le bouton <b>Partager</b> (le carré avec une flèche vers le haut), puis sur <b>« Sur l’écran d’accueil »</b>.'};
+ if(sam)return{t:'📲 <b>Pour installer l’appli</b> : ouvre ce lien dans <b>Chrome</b>, puis menu ⋮ › <b>Installer l’application</b>.<br><small>Dans Samsung Internet, Android peut afficher un avertissement « appli non sécurisée ». Il est lié à la façon dont ce navigateur crée l’appli : Mojo Dancer ne demande aucun accès à ton téléphone. Chrome évite ce message.</small>',copy:true};
+ if(and)return{t:'📲 <b>Pour installer l’appli</b> : menu ⋮ › <b>Installer l’application</b> (ou le bouton <b>📲 Installer</b> s’il apparaît en bas).'};
+ return{t:'💻 <b>Pour installer l’appli</b> : clique sur l’icône d’installation à droite de la barre d’adresse (Chrome ou Edge).'}}
+function openHelp(){const tip=helpTip(),h=$('hc');
+ h.innerHTML='<h2>Bienvenue sur Mojo Dancer 💃🕺</h2><ul><li>🎵 Appuie sur <b>« ♪ Musique »</b> pour choisir tes MP3. Ils sont mémorisés sur ton appareil.</li><li>💃🕺 <b>Choisis ta danseuse ou ton danseur</b> avec le bouton en bas. Chacun a ses propres danses, qui suivent le rythme de ta musique.</li><li>👆 Glisse pour <b>tourner autour</b>, pince pour <b>zoomer</b>, double tap pour recentrer, un tap pour cacher les boutons.</li><li>🎨 <b>« Lumière »</b> : couleurs du fond, des projecteurs et des lasers.</li></ul>'+(tip?'<div class="tip">'+tip.t+'</div>':'')+'<div class="row">'+(tip&&tip.copy?'<button id="hcopy">Copier le lien</button>':'')+'<button id="hok" style="background:#5b1a5f">OK, c’est parti !</button></div>';
+ $('help').style.display='flex';
+ const cl=()=>{$('help').style.display='none';try{localStorage.setItem('mojo_help','1')}catch(e){}};
+ $('hok').onclick=cl;if($('hcopy'))$('hcopy').onclick=async()=>{try{await navigator.clipboard.writeText(SHARE_URL);$('hcopy').textContent='Lien copié !'}catch(e){prompt('Copie ce lien :',SHARE_URL)}}}
+$('hlp').onclick=openHelp;
+try{if(!localStorage.getItem('mojo_help'))setTimeout(openHelp,1500)}catch(e){}
 const SHARE_URL='https://ribellucorsu2b.github.io/mojo-dancer/';
 $('shr').onclick=async()=>{const url=/^https?:/.test(location.protocol)?SHARE_URL:SHARE_URL,txt='Mojo Dancer : un lecteur de musique gratuit avec une danseuse 3D qui danse sur le rythme de ta musique !';
  try{if(navigator.share){await navigator.share({title:'Mojo Dancer',text:txt,url});return}}catch(e){if(e&&e.name==='AbortError')return}
