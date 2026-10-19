@@ -69,4 +69,8 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 - **Moteur 3D** : [three.js](https://threejs.org) (licence MIT).
 - **Décompression** : [fflate](https://github.com/101arrowz/fflate) (licence MIT).
 
-Créé par Cristiano, avec l'aide de Claude (Anthropic).
+ Auteur
+
+**Christian Felicelli**, alias **Ribellucorsu**
+🛠️ **PC-STUDIO**, Corse
+
