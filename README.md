@@ -76,4 +76,3 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 
 **RibelluCorsu** - **PC-STUDIO**
 
-Conçu et réalisé avec l'aide de Claude (Anthropic).
