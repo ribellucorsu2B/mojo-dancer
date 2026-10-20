@@ -1,5 +1,8 @@
 Mojo Dancer
 
+Auteur : RibelluCorsu - PC-STUDIO
+Conçu et réalisé avec l'aide de Claude (Anthropic).
+
 Personnage et animations : Mixamo (Adobe) - https://www.mixamo.com
 Moteur 3D : three.js (MIT) - https://threejs.org
 Décompression : fflate (MIT)

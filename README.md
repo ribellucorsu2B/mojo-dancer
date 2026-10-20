@@ -6,6 +6,8 @@
 
 Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu choisis tes MP3, et ça danse. Tu peux aussi l'installer sur ton écran d'accueil comme une vraie appli.
 
+**Compatible : Android et PC (Chrome ou Edge).** Pas encore compatible avec iPhone et iPad.
+
 ---
 
 ## Ce que fait l'appli
@@ -38,7 +40,6 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 |---|---|
 | **Android (Chrome)** | Ouvre le lien, menu ⋮ › **Installer l'application** (ou le bouton **📲 Installer** dans l'appli). |
 | **Android (Samsung Internet)** | Ouvre plutôt le lien dans **Chrome**. Samsung Internet peut afficher un avertissement « appli non sécurisée », lié à sa façon de créer l'appli. Mojo Dancer ne demande aucun accès à ton téléphone. |
-| **iPad / iPhone** | Ouvre le lien dans **Safari**, appuie sur le bouton **Partager** (carré avec une flèche vers le haut), puis sur **« Sur l'écran d'accueil »**. |
 | **PC (Chrome ou Edge)** | Clique sur l'icône d'installation à droite de la barre d'adresse. |
 
 L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et se met à jour toute seule quand tu as internet.
@@ -47,8 +48,8 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 
 ## À savoir
 
+- **iPhone et iPad** : l'appli ne fonctionne pas encore correctement (iOS bloque le choix des MP3). Utilise un appareil Android ou un PC.
 - Le calage sur le rythme marche mieux avec une musique au tempo bien marqué. Sur une musique très calme, la danse suit simplement l'énergie du son.
-- La lecture écran verrouillé dépend de l'appareil et du navigateur. Elle est plus stricte sur iPad et iPhone.
 - Les morceaux mémorisés prennent de la place sur ton appareil. Le bouton **Vider** de la liste la libère.
 - Si tu effaces les données du navigateur, la liste et les réglages sont supprimés.
 - Le premier chargement est un peu long (environ 14 Mo), ensuite l'appli est gardée sur l'appareil.
@@ -69,8 +70,10 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 - **Moteur 3D** : [three.js](https://threejs.org) (licence MIT).
 - **Décompression** : [fflate](https://github.com/101arrowz/fflate) (licence MIT).
 
- Auteur
+---
 
-**Christian Felicelli**, alias **Ribellucorsu**
-🛠️ **PC-STUDIO**, Corse
+## Auteur
 
+**RibelluCorsu** - **PC-STUDIO**
+
+Conçu et réalisé avec l'aide de Claude (Anthropic).

@@ -7720,9 +7720,7 @@ function save(){try{localStorage.setItem('mojo_s',JSON.stringify({bg:$('lbg').va
 async function restoreLib(s){try{const rows=await dbAll();rows.forEach(r=>pl.push({n:r.n,sz:r.sz,id:r.id,u:URL.createObjectURL(r.blob)}));
  if(pl.length){$('hint').style.display='none';const k=pl.findIndex(p=>p.id===s.uk);
   if(k>=0){cur=k;au.src=pl[k].u;$('t').textContent=pl[k].n;au.addEventListener('loadedmetadata',()=>{if(s.t)au.currentTime=Math.min(s.t,au.duration||s.t)},{once:true});mediaMeta()}draw()}}catch(e){console.warn('lib',e)}}
-const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-if(IOS){$('f').removeAttribute('accept');try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}}
-$('open').onclick=()=>{try{initA();ctx.resume()}catch(e){}$('f').click()};$('f').onchange=e=>add(e.target.files);$('mdl').onclick=()=>$('fm').click();$('fm').onchange=e=>loadModels([...e.target.files]);
+$('open').onclick=()=>$('f').click();$('f').onchange=e=>add(e.target.files);$('mdl').onclick=()=>$('fm').click();$('fm').onchange=e=>loadModels([...e.target.files]);
 const isM=f=>/\.(fbx|glb|gltf|png|jpe?g|webp)$/i.test(f.name);function intake(fs){fs=[...fs];const m=fs.filter(isM);if(m.length)loadModels(m);add(fs.filter(f=>!isM(f)))}
 addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>{e.preventDefault();intake(e.dataTransfer.files)});
 $('pp').onclick=()=>{if(cur<0){if(pl.length)return play(0);return $('f').click()}if(au.paused){initA();ctx.resume();au.play().catch(()=>{});if(!song)analyze(pl[cur].u,cur)}else au.pause()};
@@ -7797,7 +7795,7 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000,dt=Math.min(.3,t
 requestAnimationFrame(loop);
 function helpTip(){const UA=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),sam=/SamsungBrowser/i.test(UA),and=/Android/i.test(UA),st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
  if(st)return null;
- if(ios)return{t:'📲 <b>Pour installer l’appli</b> (dans <b>Safari</b>) : appuie sur le bouton <b>⋯</b> en bas à droite, puis sur <b>Partager</b>, fais défiler et choisis <b>« Sur l’écran d’accueil »</b>. Laisse <b>« Ouvrir comme app web »</b> activé, puis appuie sur <b>Ajouter</b>.<br><small>Sur un iOS plus ancien, le bouton Partager (carré avec une flèche) est directement visible en bas de l’écran.</small>'};
+ if(ios)return{t:'📱 <b>iPhone et iPad</b> : l’appli n’est pas encore compatible (iOS bloque le choix des MP3). Utilise un téléphone <b>Android</b> ou un <b>PC</b> (Chrome ou Edge).'};
  if(sam)return{t:'📲 <b>Pour installer l’appli</b> : ouvre ce lien dans <b>Chrome</b>, puis menu ⋮ › <b>Installer l’application</b>.<br><small>Dans Samsung Internet, Android peut afficher un avertissement « appli non sécurisée ». Il est lié à la façon dont ce navigateur crée l’appli : Mojo Dancer ne demande aucun accès à ton téléphone. Chrome évite ce message.</small>',copy:true};
  if(and)return{t:'📲 <b>Pour installer l’appli</b> : menu ⋮ › <b>Installer l’application</b> (ou le bouton <b>📲 Installer</b> s’il apparaît en bas).'};
  return{t:'💻 <b>Pour installer l’appli</b> : clique sur l’icône d’installation à droite de la barre d’adresse (Chrome ou Edge).'}}
