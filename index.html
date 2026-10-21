@@ -33,7 +33,7 @@ input[type=color]{width:42px;height:32px;padding:0;border:none;background:none;f
 <div class="r b"><button id="pv">⏮</button><button id="pp">▶</button><button id="nx">⏭</button><button id="open">♪ Musique</button><button id="ls">Liste</button></div>
 <div class="r sm">Vitesse<input id="sp" type="range" min="30" max="200" value="80">Volume<input id="v" type="range" min="0" max="100" value="80"></div>
 <div id="lp"><div class="r sm"><span style="min-width:78px">Fond</span><span id="swb" class="r" style="gap:6px"></span><input id="lbg" type="color" value="#07040f"></div>
-<div class="r sm"><span style="min-width:78px">Projecteurs</span><button id="lauto" class="on" style="min-height:32px">Auto</button><span id="swl" class="r" style="gap:6px"></span><input id="llc" type="color" value="#ff2d95"></div><div class="r sm"><span style="min-width:78px">Lasers</span><button id="lzb" style="min-height:32px">Multicolore</button></div></div>
+<div class="r sm"><span style="min-width:78px">Projecteurs</span><button id="lauto" class="on" style="min-height:32px">Auto</button><span id="swl" class="r" style="gap:6px"></span><input id="llc" type="color" value="#ff2d95"></div><div class="r sm"><span style="min-width:78px">Lasers</span><button id="lzb" style="min-height:32px">Multicolore</button></div><div class="r sm"><span style="min-width:78px">Sol</span><button id="flb" style="min-height:32px">Disco animé</button></div></div>
 <div class="r sm" style="flex-wrap:wrap"><button id="lbtn" style="min-height:36px">🎨 Lumière</button><button id="chr" style="min-height:36px">💃 Danseuse</button><button id="shr" style="min-height:36px">📤 Partager</button><button id="inst" style="min-height:36px;display:none">📲 Installer</button><button id="mdl" style="min-height:36px">Changer de personnage</button><span id="dn"></span><button id="fs" style="min-height:36px">⛶</button><button id="hlp" style="min-height:36px">❓ Aide</button></div></div>
 <input id="f" type="file" accept="audio/*" multiple hidden><input id="fm" type="file" accept=".fbx,.glb,.gltf,.png,.jpg,.jpeg,.webp" multiple hidden>
 <script>/**
@@ -7716,7 +7716,7 @@ function nextTrack(auto){const n=nextIdx(auto);if(n<0){au.pause();return}if(cur>
 function prevTrack(){if(au.currentTime>3||!pl.length){au.currentTime=0;return}let p=hist.pop();if(p==null||p>=pl.length)p=(cur-1+pl.length)%pl.length;play(p)}
 if('mediaSession' in navigator){const h=(a,f)=>{try{navigator.mediaSession.setActionHandler(a,f)}catch(e){}};
  h('play',()=>{if(au.paused)$('pp').click()});h('pause',()=>au.pause());h('previoustrack',prevTrack);h('nexttrack',()=>nextTrack(false));h('seekto',e=>{au.currentTime=e.seekTime})}
-function save(){try{localStorage.setItem('mojo_s',JSON.stringify({bg:$('lbg').value,lc:$('llc').value,lauto,lzm,sp:$('sp').value,v:$('v').value,shuf,rep,chr:chi,uk:pl[cur]?pl[cur].id:null,t:au.currentTime||0}))}catch(e){}}
+function save(){try{localStorage.setItem('mojo_s',JSON.stringify({bg:$('lbg').value,lc:$('llc').value,lauto,lzm,sp:$('sp').value,v:$('v').value,shuf,rep,chr:chi,fl:flm,uk:pl[cur]?pl[cur].id:null,t:au.currentTime||0}))}catch(e){}}
 async function restoreLib(s){try{const rows=await dbAll();rows.forEach(r=>pl.push({n:r.n,sz:r.sz,id:r.id,u:URL.createObjectURL(r.blob)}));
  if(pl.length){$('hint').style.display='none';const k=pl.findIndex(p=>p.id===s.uk);
   if(k>=0){cur=k;au.src=pl[k].u;$('t').textContent=pl[k].n;au.addEventListener('loadedmetadata',()=>{if(s.t)au.currentTime=Math.min(s.t,au.duration||s.t)},{once:true});mediaMeta()}draw()}}catch(e){console.warn('lib',e)}}
@@ -7772,11 +7772,25 @@ function lasers(t,live){LZ.visible=lzm!=2;if(!LZ.visible)return;
    if(lzm==1){const c=lauto?L1.color:lc;b.core.material.color.copy(c);b.halo.material.color.copy(c)}else{const hc=LCOL[(i+j+pat)%6];b.core.material.color.setHex(hc);b.halo.material.color.setHex(hc)}
    b.core.material.opacity=on*.75;b.halo.material.opacity=on*.2})})}
 
+// --- sol disco : carreaux carrés qui changent de couleur, forme ronde ---
+const FTS=.16,FR=1.627,FPAL=[0xff2d95,0x27e4ff,0xa24dff,0xffe600,0x3dff7a,0xff8a1f,0x3366ff,0xff1133].map(c=>new THREE.Color(c)),FT=[],ftmp=new THREE.Color();
+for(let gx=-12;gx<=12;gx++)for(let gz=-12;gz<=12;gz++){const x=gx*FTS,z=gz*FTS,d=Math.hypot(x,z);if(d<=FR)FT.push({x,z,d,h:(Math.sin(gx*12.9898+gz*78.233)*43758.5453)%1,sp:Math.abs((Math.sin(gx*39.346+gz*11.135)*24634.6345)%1)})}
+FT.forEach(f=>{f.h=Math.abs(f.h)});
+const FL=new THREE.InstancedMesh(new THREE.BoxGeometry(FTS*.9,.02,FTS*.9),new THREE.MeshBasicMaterial({color:0xffffff}),FT.length);
+const fdm=new THREE.Object3D();FT.forEach((f,i)=>{fdm.position.set(f.x,.012,f.z);fdm.updateMatrix();FL.setMatrixAt(i,fdm.matrix)});S.add(FL);
+let flm=0;const FLN=['Disco animé','Disco fixe','Uni (ancien)'];
+function colorFloor(t,live,bt,lb,kk){if(flm==2)return;const pat=Math.floor(bt/8),wr=live?(t-lb)*3.2:(t*1.1)%3.4,sp=live?.7+E.m*1.5:.4;
+ for(let i=0;i<FT.length;i++){const f=FT[i];const ci=Math.floor(f.h*8+(flm==0?t*sp+pat*2:0))&7;
+  let br=flm==0?.28+Math.exp(-Math.pow((f.d-wr)/.3,2))*.7+(live?E.b*.25:0)+((live&&kk>.3&&f.sp>.88)?kk*.5:0):.5;
+  ftmp.copy(FPAL[ci]).multiplyScalar(Math.min(.95,br));FL.setColorAt(i,ftmp)}
+ FL.instanceColor.needsUpdate=true}
+function setFl(m){flm=m;$('flb').textContent=FLN[m];FL.visible=m!=2;stage.material.color.set(m==2?0x120826:0x07030f);stage.material.emissive.set(m==2?0x1a0a3a:0x0a0414);colorFloor(0,false,0,0,0)}
+$('flb').onclick=()=>setFl((flm+1)%3);
 // --- restauration des réglages et de la bibliothèque ---
 (function(){let s={};try{s=JSON.parse(localStorage.getItem('mojo_s')||'{}')}catch(e){}
  if(s.bg)setBg(s.bg);if(s.lc){lc.set(s.lc);$('llc').value=s.lc}if(s.lauto===false){lauto=false;$('lauto').classList.remove('on')}
  if(s.lzm>=0&&s.lzm<3){lzm=s.lzm;$('lzb').textContent=['Multicolore','Couleur projecteurs','Désactivés'][lzm]}
- if(s.sp)$('sp').value=s.sp;if(s.v){$('v').value=s.v;au.volume=s.v/100}shuf=!!s.shuf;rep=s.rep||0;$('chr').onclick=()=>showChar(1-chi);showChar(s.chr===1?1:0);restoreLib(s)})();
+ if(s.sp)$('sp').value=s.sp;if(s.v){$('v').value=s.v;au.volume=s.v/100}shuf=!!s.shuf;rep=s.rep||0;$('chr').onclick=()=>showChar(1-chi);setFl(s.fl>=0&&s.fl<3?s.fl:0);showChar(s.chr===1?1:0);restoreLib(s)})();
 setInterval(save,4000);addEventListener('pagehide',save);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save();else if(ctx&&!au.paused)ctx.resume()});
 // --- boucle ---
@@ -7789,7 +7803,7 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000,dt=Math.min(.3,t
  const q=1-Math.exp(-dt*12);E.b+=(b-E.b)*q;E.m+=(m-E.m)*q;E.h+=(h-E.h)*q;kick*=Math.exp(-dt*6);
  bars.forEach((x,i)=>{const v=live?data[1+Math.floor(Math.pow(i/N,1.7)*200)]/255:0;x.scale.y+=(Math.max(.05,v*.8)-x.scale.y)*.35;x.position.y=x.scale.y/2});
  L1.intensity=1.5+kick*3+E.b*2;L2.intensity=1.5+kick*2+E.h*3;if(lauto){L1.color.setHSL((t*.05)%1,1,.55);L2.color.setHSL((t*.05+.5)%1,1,.55)}else{L1.color.copy(lc);L2.color.copy(lc)}
- ring.scale.setScalar(1+kick*.05);lasers(t,live);
+ ring.scale.setScalar(1+kick*.05);lasers(t,live);colorFloor(t,live,beats,lastB,kick);
  if(mixer){const sy=live?syncSpeed():null,f=$('sp').value/80;let tg=live?.9+(E.m+E.b)*.25+kick*.1:.3;if(sy!==null)tg=Math.abs(f-1)<.06?sy:sy*f;spd+=(tg-spd)*(sy!==null?.3:.1);mixer.update(dt*spd*(sy!==null?1:$('sp').value/100));loopTick();root.scale.setScalar(1+kick*.02)}
  const pit=Math.atan2(camY-camL,camZ)+uel+Math.max(0,zm-1)*.09,rr=camZ*zm;C.position.set(Math.sin(az)*Math.cos(pit)*rr,camL+Math.sin(pit)*rr,Math.cos(az)*Math.cos(pit)*rr);S.fog.near=Math.max(7,camZ*zm+4);S.fog.far=Math.max(20,camZ*zm+17);C.lookAt(0,camL,0);R.render(S,C)}
 requestAnimationFrame(loop);
