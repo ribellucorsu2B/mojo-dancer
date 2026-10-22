@@ -1,0 +1,2 @@
+Détecteur de visage : MediaPipe Face Mesh (Google), licence Apache 2.0.
+https://github.com/google-ai-edge/mediapipe
