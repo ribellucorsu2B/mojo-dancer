@@ -35,7 +35,7 @@ input[type=color]{width:42px;height:32px;padding:0;border:none;background:none;f
 <div class="r sm">Vitesse<input id="sp" type="range" min="30" max="200" value="80">Volume<input id="v" type="range" min="0" max="100" value="80"></div>
 <div id="lp"><div class="r sm"><span style="min-width:78px">Fond</span><span id="swb" class="r" style="gap:6px"></span><input id="lbg" type="color" value="#07040f"></div>
 <div class="r sm"><span style="min-width:78px">Projecteurs</span><button id="lauto" class="on" style="min-height:32px">Auto</button><span id="swl" class="r" style="gap:6px"></span><input id="llc" type="color" value="#ff2d95"></div><div class="r sm"><span style="min-width:78px">Lasers</span><button id="lzb" style="min-height:32px">Multicolore</button></div><div class="r sm"><span style="min-width:78px">Sol</span><button id="flb" style="min-height:32px">Disco animé</button></div><div class="r sm"><span style="min-width:78px">Stroboscope</span><button id="stb" style="min-height:32px">Activé</button></div></div>
-<div class="r sm" style="flex-wrap:wrap"><button id="lbtn" style="min-height:36px">🎨 Lumière</button><button id="chr" style="min-height:36px">💃 Danseuse</button><button id="shr" style="min-height:36px">📤 Partager</button><button id="inst" style="min-height:36px;display:none">📲 Installer</button><button id="mdl" style="min-height:36px">Changer de personnage</button><span id="dn"></span><button id="fs" style="min-height:36px">⛶</button><button id="hlp" style="min-height:36px">❓ Aide</button></div></div>
+<div class="r sm" style="flex-wrap:wrap"><button id="lbtn" style="min-height:36px">🎨 Lumière</button><button id="chr" style="min-height:36px">💃 Danseuse</button><button id="shr" style="min-height:36px">📤 Partager</button><button id="inst" style="min-height:36px;display:none">📲 Installer</button><span id="dn"></span><button id="fs" style="min-height:36px">⛶</button><button id="hlp" style="min-height:36px">❓ Aide</button></div></div>
 <input id="f" type="file" accept="audio/*" multiple hidden><input id="fm" type="file" accept=".fbx,.glb,.gltf,.png,.jpg,.jpeg,.webp" multiple hidden>
 <script>/**
  * @license
@@ -7721,7 +7721,7 @@ function save(){try{localStorage.setItem('mojo_s',JSON.stringify({bg:$('lbg').va
 async function restoreLib(s){try{const rows=await dbAll();rows.forEach(r=>pl.push({n:r.n,sz:r.sz,id:r.id,u:URL.createObjectURL(r.blob)}));
  if(pl.length){$('hint').style.display='none';const k=pl.findIndex(p=>p.id===s.uk);
   if(k>=0){cur=k;au.src=pl[k].u;$('t').textContent=pl[k].n;au.addEventListener('loadedmetadata',()=>{if(s.t)au.currentTime=Math.min(s.t,au.duration||s.t)},{once:true});mediaMeta()}draw()}}catch(e){console.warn('lib',e)}}
-$('open').onclick=()=>$('f').click();$('f').onchange=e=>add(e.target.files);$('mdl').onclick=()=>$('fm').click();$('fm').onchange=e=>loadModels([...e.target.files]);
+$('open').onclick=()=>$('f').click();$('f').onchange=e=>add(e.target.files);$('fm').onchange=e=>loadModels([...e.target.files]);
 const isM=f=>/\.(fbx|glb|gltf|png|jpe?g|webp)$/i.test(f.name);function intake(fs){fs=[...fs];const m=fs.filter(isM);if(m.length)loadModels(m);add(fs.filter(f=>!isM(f)))}
 addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>{e.preventDefault();intake(e.dataTransfer.files)});
 $('pp').onclick=()=>{if(cur<0){if(pl.length)return play(0);return $('f').click()}if(au.paused){initA();ctx.resume();au.play().catch(()=>{});if(!song)analyze(pl[cur].u,cur)}else au.pause()};
@@ -7808,7 +7808,7 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000,dt=Math.min(.3,t
  const q=1-Math.exp(-dt*12);E.b+=(b-E.b)*q;E.m+=(m-E.m)*q;E.h+=(h-E.h)*q;kick*=Math.exp(-dt*6);if(strobeV>.005){strobeV*=Math.exp(-dt*14);SB.style.opacity=strobeV}else if(strobeV>0){strobeV=0;SB.style.opacity=0}
  bars.forEach((x,i)=>{const v=live?data[1+Math.floor(Math.pow(i/N,1.7)*200)]/255:0;x.scale.y+=(Math.max(.05,v*.8)-x.scale.y)*.35;x.position.y=x.scale.y/2;x.material.color.copy(FPAL[Math.floor(i*.5+t*.6+Math.floor(beats/8)*2)&7]);x.material.opacity=.3+kick*.1});
  L1.intensity=1.5+kick*3+E.b*2;L2.intensity=1.5+kick*2+E.h*3;if(lauto){L1.color.setHSL((t*.05)%1,1,.55);L2.color.setHSL((t*.05+.5)%1,1,.55)}else{L1.color.copy(lc);L2.color.copy(lc)}
- ring.scale.setScalar(1+kick*.05);lasers(t,live);colorFloor(t,live,beats,lastB,kick);
+ ring.scale.setScalar(1+kick*.05);{const q=t*.5+Math.floor(beats/8)*.7,i0=Math.floor(q)&7,i1=(i0+1)&7,f=q-Math.floor(q);ring.material.color.copy(FPAL[i0]).lerp(FPAL[i1],f).multiplyScalar(.85+kick*.3+E.b*.2)}lasers(t,live);colorFloor(t,live,beats,lastB,kick);
  if(mixer){const sy=live?syncSpeed():null,f=$('sp').value/80;let tg=live?.9+(E.m+E.b)*.25+kick*.1:.3;if(sy!==null)tg=Math.abs(f-1)<.06?sy:sy*f;spd+=(tg-spd)*(sy!==null?.3:.1);mixer.update(dt*spd*(sy!==null?1:$('sp').value/100));loopTick();root.scale.setScalar(1+kick*.02)}
  const pit=Math.atan2(camY-camL,camZ)+uel+Math.max(0,zm-1)*.09,rr=camZ*zm;C.position.set(Math.sin(az)*Math.cos(pit)*rr,camL+Math.sin(pit)*rr,Math.cos(az)*Math.cos(pit)*rr);S.fog.near=Math.max(7,camZ*zm+4);S.fog.far=Math.max(20,camZ*zm+17);C.lookAt(0,camL,0);R.render(S,C)}
 requestAnimationFrame(loop);
