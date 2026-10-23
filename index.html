@@ -7791,13 +7791,9 @@ $('flb').onclick=()=>setFl((flm+1)%3);
 let strobeOn=matchMedia('(prefers-reduced-motion: reduce)').matches?0:2,strobeV=0,lastS=0,pk=.5,lastBi=-1;const SB=$('strobe'),STH=[0,.92,.8,.65],STN=['Désactivé','Faible','Moyen','Fort'];
 function setSb(v){strobeOn=v;$('stb').textContent=STN[v];if(!v){strobeV=0;SB.style.opacity=0}}
 $('stb').onclick=()=>setSb((strobeOn+1)%4);
-// --- ambiance : boule disco, spots tournants, fumée colorée, confettis ---
+// --- ambiance : spots tournants, fumée colorée, confettis ---
 const AM=new THREE.Group();S.add(AM);let amm=2;const AMN=['Aucune','Légère','Complète'];
-const BALL_Y=2.25,BR=.26,ballG=new THREE.IcosahedronGeometry(BR,2).toNonIndexed(),bnf=ballG.attributes.position.count/3,bcol=new Float32Array(bnf*9),bph=Float32Array.from({length:bnf},()=>Math.random()*6.283);
-ballG.setAttribute('color',new THREE.BufferAttribute(bcol,3));
-const ball=new THREE.Mesh(ballG,new THREE.MeshBasicMaterial({vertexColors:true,fog:false}));const BG=new THREE.Group();BG.add(ball);AM.add(BG);
-{const st=new THREE.Mesh(new THREE.CylinderGeometry(.006,.006,3,4),new THREE.MeshBasicMaterial({color:0x888888,fog:false}));st.position.y=BR+1.5;BG.add(st)}
-function placeBall(){if(innerHeight>innerWidth)BG.position.set(0,2.0,-1.5);else BG.position.set(0,2.3,0)}placeBall();addEventListener('resize',placeBall);
+
 // points de lumière qui tournent autour de la piste
 const SPN=70,SPG=new THREE.Group();AM.add(SPG);
 const SPM=new THREE.InstancedMesh(new THREE.PlaneGeometry(.34,.34),new THREE.MeshBasicMaterial({map:null,color:0xffffff,transparent:true,opacity:.6,blending:THREE.AdditiveBlending,depthWrite:false,fog:false,side:THREE.DoubleSide}),SPN);
@@ -7816,12 +7812,7 @@ function confetti(){let n=0;for(let k=0;k<CFN&&n<110;k++){const i=(cfNext+k)%CFN
 const tmpC=new THREE.Color();
 function ambiance(t,live,dt,b){AM.visible=amm>0;if(!AM.visible)return;
  const hit=live?Math.min(1,kick):0,full=amm===2;
- // boule : facettes qui scintillent
- ball.rotation.y=t*.45;const pal=Math.floor(t*1.5+Math.floor(beats/8))&7,gl=.35+hit*.5+(live?E.h*.5:.1);
- for(let f=0;f<bnf;f++){const s=Math.pow(Math.max(0,Math.sin(t*(1.6+(f%5)*.35)+bph[f])),5),tint=(f+pal)%7===0?1:0;
-  const c=tint?FPAL[(f+pal)&7]:null,v=Math.min(1,.18+gl*.25+s*gl*1.3);
-  for(let k=0;k<3;k++){const o=f*9+k*3;if(c){bcol[o]=Math.min(1,c.r*v*1.6);bcol[o+1]=Math.min(1,c.g*v*1.6);bcol[o+2]=Math.min(1,c.b*v*1.6)}else{bcol[o]=v*.92;bcol[o+1]=v*.95;bcol[o+2]=v}}}
- ballG.attributes.color.needsUpdate=true;
+ 
  // points de lumière
  SPG.rotation.y=t*.12;SPM.material.opacity=.3+hit*.4+(live?E.h*.35:.08);const q0=Math.floor(t*.8+Math.floor(beats/8)*2);
  for(let i=0;i<SPN;i+=1){tmpC.copy(FPAL[(i+q0)&7]);const tw=.55+.45*Math.sin(t*2+i*1.7);tmpC.multiplyScalar(tw*1.8);SPM.setColorAt(i,tmpC)}SPM.instanceColor.needsUpdate=true;
