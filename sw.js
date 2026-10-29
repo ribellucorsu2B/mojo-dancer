@@ -1,5 +1,5 @@
 // Mode hors ligne. Pour publier une mise à jour : change le numéro de version ci-dessous.
-const V = 'mojo-v18';
+const V = 'mojo-v19';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

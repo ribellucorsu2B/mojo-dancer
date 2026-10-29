@@ -15,7 +15,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 - 🎵 **Lecteur de musique** : tu choisis les MP3 (ou autres fichiers audio) de ton appareil. La liste de lecture, le dernier titre écouté et tes réglages sont mémorisés.
 - 💃🕺 **Danseuse ou danseur** : un bouton permet de choisir le personnage. Chacun a ses propres danses, qui s'enchaînent en boucle.
 - 🎤 **Mode micro** : le personnage danse sur la musique qui passe autour de toi (radio, enceinte, télé, autre téléphone…). L'appli trouve le tempo en quelques secondes et suit les changements de morceau. Le son est analysé sur ton appareil, il n'est jamais enregistré ni envoyé.
-- 👗 **Tenue de la danseuse** : tenue originale (rouge et noir) ou tenue blanc et or avec cheveux noirs. Le choix est mémorisé.
+- 👗 **Tenues** : la danseuse peut passer en blanc et or avec cheveux noirs, le danseur en t-shirt blanc « MOJO DANCER » avec cheveux châtain. Le choix est mémorisé pour chacun.
 - 🥁 **Danse calée sur le rythme** : l'appli analyse le tempo de chaque morceau et cale la danse dessus. Le tempo trouvé s'affiche à côté du nom de la danse.
 - 🔦 **Lasers et lumières** : des lasers colorés balaient la scène au rythme de la musique. Tu règles la couleur du fond, celle des projecteurs et le mode des lasers (multicolore, couleur des projecteurs, ou désactivés).
 - 👆 **Vue libre** : glisse pour tourner autour du personnage, pince (ou molette sur PC) pour zoomer, double tap pour recentrer, un tap pour cacher les boutons.
@@ -30,7 +30,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 1. Ouvre l'appli et appuie sur **« ♪ Musique »** pour choisir tes morceaux.
 2. La musique démarre et le personnage danse sur le rythme.
 3. Pas de MP3 ? Appuie sur **🎤** : le personnage danse sur la musique autour de toi. Appuie à nouveau pour arrêter le micro.
-4. Avec le bouton **💃 Danseuse / 🕺 Danseur**, tu changes de personnage, et avec **👗** tu changes la tenue de la danseuse.
+4. Avec le bouton **💃 Danseuse / 🕺 Danseur**, tu changes de personnage, et avec **👗** tu changes sa tenue.
 5. Avec **🎨 Lumière**, tu changes les couleurs et les lasers.
 6. Avec **Liste**, tu gères ta liste de lecture.
 7. Le bouton **❓ Aide** rouvre le mode d'emploi à tout moment.
