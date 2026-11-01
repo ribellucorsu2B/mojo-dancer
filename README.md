@@ -13,7 +13,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 ## Ce que fait l'appli
 
 - 🎵 **Lecteur de musique** : tu choisis les MP3 (ou autres fichiers audio) de ton appareil. La liste de lecture, le dernier titre écouté et tes réglages sont mémorisés.
-- 💃🕺 **Trois personnages** : deux danseuses et un danseur, au choix avec un bouton. Leurs danses s'enchaînent en boucle, et Mojo, la deuxième danseuse, en connaît 10, dont une danse du ventre.
+- 💃🕺 **Trois personnages** : deux danseuses et un danseur, au choix avec un bouton. Leurs danses s'enchaînent en boucle, et Mojo, la deuxième danseuse en combinaison noir et rouge, en connaît 11, dont une danse du ventre.
 - 🎤 **Mode micro** : le personnage danse sur la musique qui passe autour de toi (radio, enceinte, télé, autre téléphone…). L'appli trouve le tempo en quelques secondes et suit les changements de morceau. Le son est analysé sur ton appareil, il n'est jamais enregistré ni envoyé.
 - 👗 **Tenues** : la danseuse peut passer en blanc et or avec cheveux noirs, le danseur en t-shirt blanc « MOJO DANCER » avec cheveux châtain. Le choix est mémorisé pour chacun.
 - 🥁 **Danse calée sur le rythme** : l'appli analyse le tempo de chaque morceau et cale la danse dessus. Le tempo trouvé s'affiche à côté du nom de la danse.
@@ -72,7 +72,7 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 ## Crédits
 
 - **Personnages et animations** : [Mixamo](https://www.mixamo.com) (Adobe), utilisés selon la FAQ Mixamo. Les fichiers 3D d'origine ne sont pas redistribués dans ce dépôt.
-- **Mojo, la deuxième danseuse** : créée avec [MakeHuman](http://www.makehumancommunity.org) (modèles et éléments sous licence CC0), puis squelette et danse « Belly Dance » par Mixamo.
+- **Mojo, la deuxième danseuse** : créée avec [MakeHuman](http://www.makehumancommunity.org) et les packs de la communauté MakeHuman sous licence CC0 (combinaison de culturalibre, cuissardes de Cortu, tresse d'Elvaerwyn), puis squelette et danses « Arms Hip Hop » et « Belly Dance » par Mixamo.
 - **Moteur 3D** : [three.js](https://threejs.org) (licence MIT).
 - **Décompression** : [fflate](https://github.com/101arrowz/fflate) (licence MIT).
 

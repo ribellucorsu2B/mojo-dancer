@@ -4,7 +4,7 @@ Auteur : RibelluCorsu - PC-STUDIO
 Conçu et réalisé avec l'aide de Claude (Anthropic).
 
 Personnages et animations : Mixamo (Adobe) - https://www.mixamo.com
-Mojo (deuxième danseuse) : créée avec MakeHuman (CC0) - http://www.makehumancommunity.org
+Mojo (deuxième danseuse) : créée avec MakeHuman et les packs CC0 de la communauté MakeHuman (combinaison culturalibre, cuissardes Cortu, tresse Elvaerwyn) - http://www.makehumancommunity.org
 Moteur 3D : three.js (MIT) - https://threejs.org
 Décompression : fflate (MIT)
 Les fichiers 3D d'origine de Mixamo ne sont pas redistribués.
