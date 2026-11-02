@@ -1,6 +1,6 @@
 # 💃🕺 Mojo Dancer
 
-**Un lecteur de musique gratuit, sans publicité, avec deux danseuses et un danseur en 3D qui dansent sur le rythme de tes morceaux, ou sur la musique qui passe autour de toi grâce au micro.**
+**Un lecteur de musique gratuit, sans publicité, avec deux danseuses, un danseur et un petit garçon en 3D qui dansent sur le rythme de tes morceaux, ou sur la musique qui passe autour de toi grâce au micro.**
 
 👉 **Ouvrir l'appli : https://ribellucorsu2b.github.io/mojo-dancer/**
 
@@ -13,7 +13,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 ## Ce que fait l'appli
 
 - 🎵 **Lecteur de musique** : tu choisis les MP3 (ou autres fichiers audio) de ton appareil. La liste de lecture, le dernier titre écouté et tes réglages sont mémorisés.
-- 💃🕺 **Trois personnages** : deux danseuses et un danseur, au choix avec un bouton. Leurs danses s'enchaînent en boucle, et Mojo, la deuxième danseuse en combinaison noir et rouge, en connaît 11, dont une danse du ventre.
+- 💃🕺👶 **Quatre personnages** : deux danseuses, un danseur et Ribellu, un petit garçon en salopette, au choix avec un bouton. Leurs danses s'enchaînent en boucle. Mojo, la deuxième danseuse en combinaison noir et rouge, en connaît 11, dont une danse du ventre, et Ribellu aussi, dont sa « Silly Dancing ».
 - 🎤 **Mode micro** : le personnage danse sur la musique qui passe autour de toi (radio, enceinte, télé, autre téléphone…). L'appli trouve le tempo en quelques secondes et suit les changements de morceau. Le son est analysé sur ton appareil, il n'est jamais enregistré ni envoyé.
 - 👗 **Tenues** : la danseuse peut passer en blanc et or avec cheveux noirs, le danseur en t-shirt blanc « MOJO DANCER » avec cheveux châtain. Le choix est mémorisé pour chacun.
 - 🥁 **Danse calée sur le rythme** : l'appli analyse le tempo de chaque morceau et cale la danse dessus. Le tempo trouvé s'affiche à côté du nom de la danse.
@@ -30,7 +30,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 1. Ouvre l'appli et appuie sur **« ♪ Musique »** pour choisir tes morceaux.
 2. La musique démarre et le personnage danse sur le rythme.
 3. Pas de MP3 ? Appuie sur **🎤** : le personnage danse sur la musique autour de toi. Appuie à nouveau pour arrêter le micro.
-4. Avec le bouton **💃 Danseuse / 🕺 Danseur / 💃🏻 Mojo**, tu changes de personnage, et avec **👗** tu changes la tenue de la danseuse ou du danseur.
+4. Avec le bouton **💃 Danseuse / 🕺 Danseur / 💃🏻 Mojo / 👶 Ribellu**, tu changes de personnage, et avec **👗** tu changes la tenue de la danseuse ou du danseur.
 5. Avec **🎨 Lumière**, tu changes les couleurs et les lasers.
 6. Avec **Liste**, tu gères ta liste de lecture.
 7. Le bouton **❓ Aide** rouvre le mode d'emploi à tout moment.
@@ -56,7 +56,7 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 - **Mode micro** : la première fois, le navigateur demande l'autorisation d'utiliser le micro. Avec des écouteurs, le micro n'entend pas la musique : mets le son sur le haut-parleur ou sur une enceinte. Quand l'écran s'éteint, le micro se coupe, et il reprend quand tu reviens dans l'appli.
 - Les morceaux mémorisés prennent de la place sur ton appareil. Le bouton **Vider** de la liste la libère.
 - Si tu effaces les données du navigateur, la liste et les réglages sont supprimés.
-- Le premier chargement est un peu long (environ 21 Mo), ensuite l'appli est gardée sur l'appareil.
+- Le premier chargement est un peu long (environ 21 Mo, plus 9,5 Mo la première fois que tu choisis Ribellu), ensuite l'appli est gardée sur l'appareil.
 
 ---
 
@@ -73,6 +73,7 @@ L'appli installée apparaît avec sa propre icône, s'ouvre en plein écran et s
 
 - **Personnages et animations** : [Mixamo](https://www.mixamo.com) (Adobe), utilisés selon la FAQ Mixamo. Les fichiers 3D d'origine ne sont pas redistribués dans ce dépôt.
 - **Mojo, la deuxième danseuse** : créée avec [MakeHuman](http://www.makehumancommunity.org) et les packs de la communauté MakeHuman sous licence CC0 (combinaison de culturalibre, cuissardes de Cortu, tresse d'Elvaerwyn), puis squelette et danses « Arms Hip Hop » et « Belly Dance » par Mixamo.
+- **Ribellu, le petit garçon** : créé avec [MakeHuman](http://www.makehumancommunity.org) et ses éléments sous licence CC0 (salopette, baskets, coiffure), puis squelette et danse « Silly Dancing » par Mixamo.
 - **Moteur 3D** : [three.js](https://threejs.org) (licence MIT).
 - **Décompression** : [fflate](https://github.com/101arrowz/fflate) (licence MIT).
 

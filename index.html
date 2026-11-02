@@ -7624,8 +7624,9 @@ const root=G();S.add(root);
 const DL=new THREE.DirectionalLight(0xffffff,.9);DL.position.set(0,3,5);S.add(DL);
 R.outputEncoding=THREE.sRGBEncoding;
 let mixer=null,model=null,clips=[],ca=null,ci=0,alts={},spd=.3,left=1;
+var FH=1.7;
 function fit(m){m.updateMatrixWorld(true);const ys=[];m.traverse(o=>{if(o.isBone){const v=new THREE.Vector3();o.getWorldPosition(v);ys.push(v.y)}});
- let h=ys.length?(Math.max(...ys)-Math.min(...ys))*1.1:0;m.scale.multiplyScalar(h>0&&isFinite(h)?1.7/h:.01);m.position.set(0,0,0);m.updateMatrixWorld(true);
+ let h=ys.length?(Math.max(...ys)-Math.min(...ys))*1.1:0;m.scale.multiplyScalar(h>0&&isFinite(h)?FH/h:.01);m.position.set(0,0,0);m.updateMatrixWorld(true);
  const y2=[];m.traverse(o=>{if(o.isBone){const v=new THREE.Vector3();o.getWorldPosition(v);y2.push(v.y)}});if(y2.length)m.position.y=-Math.min(...y2)+.02}
 function mk(c){const x=THREE.LoopOnce;const n=mixer.clipAction(c);n.setLoop(x,1);n.clampWhenFinished=true;return n.reset()}
 function alt(i){return alts[i]||(alts[i]=clips[i].clone())}
@@ -7646,7 +7647,7 @@ function fixMats(m){m.traverse(o=>{if(!o.isMesh)return;(Array.isArray(o.material
  const nm=((x.name||'')+' '+(o.name||'')).toLowerCase();
  if(x.transparent||/hair|lash|brow/.test(nm)){x.alphaTest=.4;x.transparent=false;x.depthWrite=true;x.side=THREE.DoubleSide}
  x.needsUpdate=true})})}
-async function loadModels(fs){let m=null,cl=[];$('dn').textContent='Chargement…';
+async function loadModels(fs){let m=null,cl=[];FH=1.7;$('dn').textContent='Chargement…';
  fs.filter(f=>/\.(png|jpe?g|webp)$/i.test(f.name)).forEach(f=>tex[f.name.toLowerCase()]=URL.createObjectURL(f));fs=fs.filter(f=>/\.(fbx|glb|gltf)$/i.test(f.name));
  for(const f of fs){try{const buf=await f.arrayBuffer(),ext=f.name.split('.').pop().toLowerCase();
   const o=ext=='fbx'?fbxL.parse(buf,''):await new Promise((ok,ko)=>gltfL.parse(buf,'',ok,ko));
@@ -7657,11 +7658,14 @@ async function loadModels(fs){let m=null,cl=[];$('dn').textContent='Chargement�
 let AN=JSON.parse($('anim').textContent);const f32=s=>{const r=atob(s),u=new Uint8Array(r.length);for(let i=0;i<r.length;i++)u[i]=r.charCodeAt(i);return new Float32Array(u.buffer)};
 const q16=s=>{const r=atob(s),u=new Uint8Array(r.length);for(let i=0;i<r.length;i++)u[i]=r.charCodeAt(i);const a=new Int16Array(u.buffer),o=new Float32Array(a.length);for(let i=0;i<a.length;i++)o[i]=a[i]/32767;return o};
 function mkClips(){return AN.map(a=>{const t=f32(a.t);return new THREE.AnimationClip(a.name,a.d,a.k.map(k=>{const n=k.n.replace(/[\[\].:\/]/g,'');return k.p=='position'?new THREE.VectorKeyframeTrack(n+'.position',t,f32(k.v)):new THREE.QuaternionKeyframeTrack(n+'.quaternion',t,k.q?q16(k.v):f32(k.v))}))})}
-const CH=[{n:'Danseuse',ico:'💃',g:GLB,a:()=>JSON.parse($('anim').textContent)},{n:'Danseur',ico:'🕺',g:GLB2,a:()=>JSON.parse($('anim2').textContent)},{n:'Mojo',ico:'💃🏻',g:GLB3,a:()=>JSON.parse($('anim3').textContent)}];
+const CH=[{n:'Danseuse',ico:'💃',g:GLB,a:()=>JSON.parse($('anim').textContent)},{n:'Danseur',ico:'🕺',g:GLB2,a:()=>JSON.parse($('anim2').textContent)},{n:'Mojo',ico:'💃🏻',g:GLB3,a:()=>JSON.parse($('anim3').textContent)},{n:'Ribellu',ico:'👶',g:null,src:'ribellu.js',h:1.0,a:()=>window.ANIM4}];
 let chi=0;const scn=[];
 const b64buf=s=>{s=s.split(',')[1];const r=atob(s),u=new Uint8Array(r.length);for(let i=0;i<r.length;i++)u[i]=r.charCodeAt(i);return u.buffer};
-function showChar(i){chi=i;const c=CH[i];$('chr').textContent=c.ico+' '+c.n;otfLabel();AN=c.a();
- const done=sc=>{scn[i]=sc;if(chi!==i)return;setModel(sc,mkClips());if(i===0)applyOutfit(sc);else if(i===1)applyOutfitM(sc);$('hint').innerHTML='Appuie sur « ♪ Musique »<br>pour choisir un MP3 de ton téléphone<br>ou sur 🎤 pour la musique autour de toi';$('hint').style.display=pl.length||micOn?'none':'block'};
+function showChar(i){chi=i;const c=CH[i];$('chr').textContent=c.ico+' '+c.n;otfLabel();
+ // personnage dans un fichier a part (ribellu.js) : charge seulement quand on le choisit
+ if(c.src&&!c.g){if(!c.ld){c.ld=1;$('dn').textContent='Chargement…';const sc=document.createElement('script');sc.src=c.src;sc.onload=()=>{c.g=window.GLB4;if(chi===i)showChar(i)};sc.onerror=()=>{c.ld=0;$('hint').textContent='Erreur de chargement du personnage';$('hint').style.display='block'};document.head.appendChild(sc)}return}
+ AN=c.a();
+ const done=sc=>{scn[i]=sc;if(chi!==i)return;FH=c.h||1.7;setModel(sc,mkClips());if(i===0)applyOutfit(sc);else if(i===1)applyOutfitM(sc);$('hint').innerHTML='Appuie sur « ♪ Musique »<br>pour choisir un MP3 de ton téléphone<br>ou sur 🎤 pour la musique autour de toi';$('hint').style.display=pl.length||micOn?'none':'block'};
  if(scn[i])done(scn[i]);else gltfL.parse(b64buf(c.g),'',g=>done(g.scene),e=>{$('hint').textContent='Erreur de chargement du personnage';console.error(e)})}
 const E={b:.1,m:.1,h:.1};
 // --- audio / lecteur ---
@@ -8057,7 +8061,7 @@ async function applyOutfitM(sc){if(!sc)return;const M=outMatsM(sc);if(!M.body)re
  if(want!==outfitM)return;
  M.body.map=map;const rb=reflMats.get(M.body);if(rb)rb.map=map;
  if(M.hair){const h0=ORIG.get(M.hair);M.hair.map=hm;M.hair.metalness=want?0:h0.m;M.hair.roughness=want?.75:h0.r;const rh=reflMats.get(M.hair);if(rh){rh.map=hm;rh.metalness=M.hair.metalness;rh.roughness=M.hair.roughness}}}
-function otfLabel(){$('otf').style.display=chi===2?'none':'';$('otf').textContent='👗 '+(chi===1?OUTNM[outfitM]:OUTN[outfit])}
+function otfLabel(){$('otf').style.display=chi>=2?'none':'';$('otf').textContent='👗 '+(chi===1?OUTNM[outfitM]:OUTN[outfit])}
 function setOutfit(v,live){outfit=v;otfLabel();if(!live)return;
  if(v===1&&!OTX.map)note('Préparation de la tenue…');setTimeout(()=>applyOutfit(scn[0]),30);save()}
 function setOutfitM(v,live){outfitM=v;otfLabel();if(!live)return;
