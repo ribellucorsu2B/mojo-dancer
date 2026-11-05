@@ -18,7 +18,7 @@ Aucun compte, aucune inscription, rien à télécharger : tu ouvres le lien, tu 
 - 👗 **Tenues** : la danseuse peut passer en blanc et or avec cheveux noirs, le danseur en t-shirt blanc « MOJO DANCER » avec cheveux châtain. Le choix est mémorisé pour chacun.
 - 🥁 **Danse calée sur le rythme** : l'appli analyse le tempo de chaque morceau et cale la danse dessus. Le tempo trouvé s'affiche à côté du nom de la danse.
 - 🔦 **Lasers et lumières** : des lasers colorés balaient la scène au rythme de la musique. Tu règles la couleur du fond, celle des projecteurs et le mode des lasers (multicolore, couleur des projecteurs, ou désactivés).
-- 👆 **Vue libre** : glisse pour tourner autour du personnage, pince (ou molette sur PC) pour zoomer, double tap pour recentrer, un tap pour cacher les boutons.
+- 👆 **Vue libre** : glisse pour tourner autour du personnage, pince (ou molette sur PC) pour zoomer, glisse à deux doigts (ou clic droit maintenu sur PC) pour monter ou descendre la vue, jusqu'au visage par exemple, double tap pour recentrer, un tap pour cacher les boutons.
 - 🔀 **Liste de lecture** : lecture aléatoire, répétition (tout ou un titre), suppression d'un titre ou de toute la liste.
 - 📤 **Partage** : un bouton envoie le lien de l'appli en un appui.
 - 📴 **Hors ligne** : une fois installée, l'appli s'ouvre même sans internet.

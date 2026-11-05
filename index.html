@@ -7665,7 +7665,7 @@ function showChar(i){chi=i;const c=CH[i];$('chr').textContent=c.ico+' '+c.n;otfL
  // personnage dans un fichier a part (ribellu.js) : charge seulement quand on le choisit
  if(c.src&&!c.g){if(!c.ld){c.ld=1;$('dn').textContent='Chargement…';const sc=document.createElement('script');sc.src=c.src;sc.onload=()=>{c.g=window.GLB4;if(chi===i)showChar(i)};sc.onerror=()=>{c.ld=0;$('hint').textContent='Erreur de chargement du personnage';$('hint').style.display='block'};document.head.appendChild(sc)}return}
  AN=c.a();
- const done=sc=>{scn[i]=sc;if(chi!==i)return;FH=c.h||1.7;setModel(sc,mkClips());if(i===0)applyOutfit(sc);else if(i===1)applyOutfitM(sc);$('hint').innerHTML='Appuie sur « ♪ Musique »<br>pour choisir un MP3 de ton téléphone<br>ou sur 🎤 pour la musique autour de toi';$('hint').style.display=pl.length||micOn?'none':'block'};
+ const done=sc=>{scn[i]=sc;if(chi!==i)return;FH=c.h||1.7;pan=clampP(pan);setModel(sc,mkClips());if(i===0)applyOutfit(sc);else if(i===1)applyOutfitM(sc);$('hint').innerHTML='Appuie sur « ♪ Musique »<br>pour choisir un MP3 de ton téléphone<br>ou sur 🎤 pour la musique autour de toi';$('hint').style.display=pl.length||micOn?'none':'block'};
  if(scn[i])done(scn[i]);else gltfL.parse(b64buf(c.g),'',g=>done(g.scene),e=>{$('hint').textContent='Erreur de chargement du personnage';console.error(e)})}
 const E={b:.1,m:.1,h:.1};
 // --- audio / lecteur ---
@@ -7834,15 +7834,18 @@ function setLc(h){lauto=false;lc.set(h);$('llc').value=h;$('lauto').classList.re
 $('lbg').oninput=e=>setBg(e.target.value);$('llc').oninput=e=>setLc(e.target.value);
 $('lauto').onclick=()=>{lauto=true;$('lauto').classList.add('on')};
 $('lbtn').onclick=()=>{const p=$('lp');p.style.display=p.style.display=='flex'?'none':'flex'};
-let zm=1,az=0,uel=0,pdist=0,moved=0,t0=0,lastTap=0,tt=0;const ptr=new Map(),cv=$('c');
+let zm=1,az=0,uel=0,pdist=0,moved=0,t0=0,lastTap=0,tt=0,pan=0,pmid=null,mpan=false;const ptr=new Map(),cv=$('c');
+// hauteur du cadrage (pan) : deux doigts qui glissent / clic droit maintenu. Limitee entre les pieds et le haut de la tete du personnage.
+const clampP=v=>Math.min(FH*.86-camL,Math.max(.1-camL,v));const panBy=dy=>{pan=clampP(pan+dy*.0026*zm*camZ/3)};
+cv.addEventListener('contextmenu',e=>e.preventDefault());
 const clampZ=v=>Math.min(4,Math.max(.45,v));
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);if(ptr.size==1){moved=0;t0=performance.now()}if(ptr.size==2){const[a,b]=[...ptr.values()];pdist=Math.hypot(a[0]-b[0],a[1]-b[1])}});
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);if(ptr.size==1){moved=0;t0=performance.now();mpan=e.pointerType=='mouse'&&(e.button==2||e.button==1)}if(ptr.size==2){const[a,b]=[...ptr.values()];pdist=Math.hypot(a[0]-b[0],a[1]-b[1]);pmid=(a[1]+b[1])/2}});
 cv.addEventListener('pointermove',e=>{const p=ptr.get(e.pointerId);if(!p)return;const dx=e.clientX-p[0],dy=e.clientY-p[1];p[0]=e.clientX;p[1]=e.clientY;
- if(ptr.size==1){moved+=Math.abs(dx)+Math.abs(dy);az-=dx*.007;uel=Math.min(.9,Math.max(-.3,uel+dy*.004))}
- else if(ptr.size==2){moved+=99;const[a,b]=[...ptr.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pdist)zm=clampZ(zm*pdist/d);pdist=d}});
-const upP=e=>{if(!ptr.has(e.pointerId))return;ptr.delete(e.pointerId);if(ptr.size<2)pdist=0;
- if(e.type=='pointerup'&&ptr.size==0&&moved<8&&performance.now()-t0<350){const n=performance.now();
-  if(n-lastTap<350){clearTimeout(tt);az=0;uel=0;zm=1;lastTap=0}else{lastTap=n;tt=setTimeout(()=>{const u=$('ui');u.style.display=u.style.display=='none'?'flex':'none'},300)}}};
+ if(ptr.size==1){moved+=Math.abs(dx)+Math.abs(dy);if(mpan){panBy(dy);return}az-=dx*.007;uel=Math.min(.9,Math.max(-.3,uel+dy*.004))}
+ else if(ptr.size==2){moved+=99;const[a,b]=[...ptr.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pdist)zm=clampZ(zm*pdist/d);pdist=d;const m=(a[1]+b[1])/2;if(pmid!==null)panBy(m-pmid);pmid=m}});
+const upP=e=>{if(!ptr.has(e.pointerId))return;ptr.delete(e.pointerId);if(ptr.size<2){pdist=0;pmid=null}
+ if(e.type=='pointerup'&&ptr.size==0&&!mpan&&moved<8&&performance.now()-t0<350){const n=performance.now();
+  if(n-lastTap<350){clearTimeout(tt);az=0;uel=0;zm=1;pan=0;lastTap=0}else{lastTap=n;tt=setTimeout(()=>{const u=$('ui');u.style.display=u.style.display=='none'?'flex':'none'},300)}}};
 cv.addEventListener('pointerup',upP);cv.addEventListener('pointercancel',upP);
 cv.addEventListener('wheel',e=>{e.preventDefault();zm=clampZ(zm*(1+e.deltaY*.001))},{passive:false});
 $('dn').style.cursor='pointer';$('dn').onclick=()=>useClip(ci+1);
@@ -8087,7 +8090,7 @@ function loop(now){requestAnimationFrame(loop);const t=now/1000,dt=Math.min(.3,t
  L1.intensity=1.5+kick*3+E.b*2;L2.intensity=1.5+kick*2+E.h*3;if(lauto){L1.color.setHSL((t*.05)%1,1,.55);L2.color.setHSL((t*.05+.5)%1,1,.55)}else{L1.color.copy(lc);L2.color.copy(lc)}
  ring.scale.setScalar(1+kick*.05);{const q=t*.5+Math.floor(beats/8)*.7,i0=Math.floor(q)&7,i1=(i0+1)&7,f=q-Math.floor(q);ring.material.color.copy(FPAL[i0]).lerp(FPAL[i1],f).multiplyScalar(.85+kick*.3+E.b*.2)}lasers(t,live);colorFloor(t,live,beats,lastB,kick);ambiance(t,live,dt,b);spots(t,live,dt);reflTick();
  if(mixer){const sy=live?syncSpeed():null,f=$('sp').value/80;let tg=live?.9+(E.m+E.b)*.25+kick*.1:.3;if(sy!==null)tg=Math.abs(f-1)<.06?sy:sy*f;spd+=(tg-spd)*(sy!==null?.3:.1);mixer.update(dt*spd*(sy!==null?1:$('sp').value/100));secTick();loopTick();root.scale.setScalar(1+kick*.02)}
- const pit=Math.atan2(camY-camL,camZ)+uel+Math.max(0,zm-1)*.09,rr=camZ*zm;C.position.set(Math.sin(az)*Math.cos(pit)*rr,camL+Math.sin(pit)*rr,Math.cos(az)*Math.cos(pit)*rr);S.fog.near=Math.max(7,camZ*zm+4);S.fog.far=Math.max(20,camZ*zm+17);C.lookAt(0,camL,0);R.render(S,C)}
+ const pit=Math.atan2(camY-camL,camZ)+uel+Math.max(0,zm-1)*.09,rr=camZ*zm;C.position.set(Math.sin(az)*Math.cos(pit)*rr,camL+pan+Math.sin(pit)*rr,Math.cos(az)*Math.cos(pit)*rr);S.fog.near=Math.max(7,camZ*zm+4);S.fog.far=Math.max(20,camZ*zm+17);C.lookAt(0,camL+pan,0);R.render(S,C)}
 requestAnimationFrame(loop);
 function helpTip(){const UA=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),sam=/SamsungBrowser/i.test(UA),and=/Android/i.test(UA),st=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
  if(st)return null;
@@ -8096,7 +8099,7 @@ function helpTip(){const UA=navigator.userAgent,ios=/iPad|iPhone|iPod/.test(UA)|
  if(and)return{t:'📲 <b>Pour installer l’appli</b> : menu ⋮ › <b>Installer l’application</b> (ou le bouton <b>📲 Installer</b> s’il apparaît en bas).'};
  return{t:'💻 <b>Pour installer l’appli</b> : clique sur l’icône d’installation à droite de la barre d’adresse (Chrome ou Edge).'}}
 function openHelp(){const tip=helpTip(),h=$('hc');
- h.innerHTML='<h2>Bienvenue sur Mojo Dancer 💃🕺</h2><ul><li>🎵 Appuie sur <b>« ♪ Musique »</b> pour choisir tes MP3. Ils sont mémorisés sur ton appareil.</li><li>💃🕺 <b>Choisis ta danseuse ou ton danseur</b> avec le bouton en bas. Chacun a ses propres danses, qui suivent le rythme de ta musique.</li><li>👆 Glisse pour <b>tourner autour</b>, pince pour <b>zoomer</b>, double tap pour recentrer, un tap pour cacher les boutons.</li><li>🎤 <b>Micro</b> : ta danseuse ou ton danseur danse sur la musique qui passe autour de toi (radio, enceinte, autre téléphone…). Le son est analysé sur ton appareil : il n’est ni enregistré ni envoyé.</li><li>👗 <b>Tenue</b> : tenue blanc et or pour la danseuse, t-shirt « MOJO DANCER » pour le danseur.</li><li>🎨 <b>« Lumière »</b> : couleurs du fond, des projecteurs, des lasers et du sol.</li><li>⚡ Le <b>stroboscope</b> (flashs sur les gros coups de basse) peut gêner les personnes sensibles aux flashs : tu peux le couper dans <b>🎨 Lumière</b>.</li></ul>'+(tip?'<div class="tip">'+tip.t+'</div>':'')+'<div class="row">'+(tip&&tip.copy?'<button id="hcopy">Copier le lien</button>':'')+'<button id="hok" style="background:#5b1a5f">OK, c’est parti !</button></div>';
+ h.innerHTML='<h2>Bienvenue sur Mojo Dancer 💃🕺</h2><ul><li>🎵 Appuie sur <b>« ♪ Musique »</b> pour choisir tes MP3. Ils sont mémorisés sur ton appareil.</li><li>💃🕺 <b>Choisis ta danseuse ou ton danseur</b> avec le bouton en bas. Chacun a ses propres danses, qui suivent le rythme de ta musique.</li><li>👆 Glisse pour <b>tourner autour</b>, pince pour <b>zoomer</b>, glisse à deux doigts (clic droit sur PC) pour <b>monter ou descendre</b> la vue, double tap pour recentrer, un tap pour cacher les boutons.</li><li>🎤 <b>Micro</b> : ta danseuse ou ton danseur danse sur la musique qui passe autour de toi (radio, enceinte, autre téléphone…). Le son est analysé sur ton appareil : il n’est ni enregistré ni envoyé.</li><li>👗 <b>Tenue</b> : tenue blanc et or pour la danseuse, t-shirt « MOJO DANCER » pour le danseur.</li><li>🎨 <b>« Lumière »</b> : couleurs du fond, des projecteurs, des lasers et du sol.</li><li>⚡ Le <b>stroboscope</b> (flashs sur les gros coups de basse) peut gêner les personnes sensibles aux flashs : tu peux le couper dans <b>🎨 Lumière</b>.</li></ul>'+(tip?'<div class="tip">'+tip.t+'</div>':'')+'<div class="row">'+(tip&&tip.copy?'<button id="hcopy">Copier le lien</button>':'')+'<button id="hok" style="background:#5b1a5f">OK, c’est parti !</button></div>';
  $('help').style.display='flex';
  const cl=()=>{$('help').style.display='none';try{localStorage.setItem('mojo_help','1')}catch(e){}};
  $('hok').onclick=cl;if($('hcopy'))$('hcopy').onclick=async()=>{try{await navigator.clipboard.writeText(SHARE_URL);$('hcopy').textContent='Lien copié !'}catch(e){prompt('Copie ce lien :',SHARE_URL)}}}
